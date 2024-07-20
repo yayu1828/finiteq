@@ -37,8 +37,8 @@ E = 0.001
 A = 2.625
 J = 1.325#2.5倍
 m = 2# Δμ的值
-q=0
-B=20
+q=0.0385
+B=4
 mass=0.01575#即乘\hbar^{2}/2m=63.48meV/nm²\
 Cross=0.001519
 def g(x, y,T,q,B, mass,Cross,m,n):#x是kx，y是ky，e是有效质量，n是μ，m是Δμ
@@ -85,7 +85,7 @@ def F(x, y,T,q,B, mass,Cross,m,n):
         return -numerator3/numerator1
     else:
         return (numerator2 - numerator3) / numerator1
-def h(x, y,T,q,B,mass,Cross,n):
+def h(x, y,T,q,B,mass,Cross,m,n):
     numerator1 = (2*x**2/mass + 2*y**2/mass+q**2/(2*mass) - 2*n+m+Cross*2*q*B/mass+(Cross**2)*2*B**2/mass)
     energy1=(-x**2/(mass*T) -y**2/(mass*T)- q**2/(4*mass*T) - x*q/(mass*T) -Cross*x*B/(mass*T)-Cross*q*B/(2*mass*T)-(Cross**2)*B**2/(mass*T) +n/T-m/(2*T))*11.6
     energy2=(x*q/(mass*T) - x**2/(mass*T) -y**2/(mass*T)- q**2/(4*mass*T)+Cross*x*B/(mass*T)-Cross*q*B/(2*mass*T)-(Cross**2)*B**2/(mass*T)+n/T-m/(2*T))*11.6
@@ -107,10 +107,10 @@ matrix_v[3, 0] = J
 matrix_V = -matrix_v
 
 def matrix(T, q, B, mass,Cross, m, n):
-    CC1 = integrate_2d(g, -2, 2, -2, 2, 0.1, 0.1, T,q,B,mass,Cross,m,n)
-    CC2 = integrate_2d(f, -2, 2, -2, 2, 0.1, 0.1, T,q,B,mass,Cross,m,n)
-    CC3 = integrate_2d(F, -2, 2, -2, 2, 0.1, 0.1, T,q,B,mass,Cross,m,n)
-    CC4 = integrate_2d(h, -2, 2, -2, 2, 0.1, 0.1, T,q,B,mass,Cross,n)
+    CC1 = integrate_2d(g, -2, 2, -2, 2, 0.01, 0.01, T,q,B,mass,Cross,m,n)
+    CC2 = integrate_2d(f, -2, 2, -2, 2, 0.01, 0.01, T,q,B,mass,Cross,m,n)
+    CC3 = integrate_2d(F, -2, 2, -2, 2, 0.01, 0.01, T,q,B,mass,Cross,m,n)
+    CC4 = integrate_2d(h, -2, 2, -2, 2, 0.01, 0.01, T,q,B,mass,Cross,m,n)
     
     # 构造susceptibility矩阵matrix_X
     matrix_X = np.diag([CC1, CC2, CC3, CC4])
